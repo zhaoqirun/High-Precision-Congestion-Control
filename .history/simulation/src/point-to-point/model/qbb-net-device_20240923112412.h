@@ -56,23 +56,13 @@ public:
 	RdmaEgressQueue();
   // 指定索引为 qIndex 的队列中出队数据包//
 	Ptr<Packet> DequeueQindex(int qIndex);  
-  // 根据队列状态（可能是某些队列暂停）选择下一个应该被处理的队列的索引
 	int GetNextQindex(bool paused[]);
-
-	int GetLastQueue();  //获取上一次处理的队列索引
-
-  ///获取索引为 qIndex 的队列中数据包的总字节数。
-	uint32_t GetNBytes(uint32_t qIndex);  
+	int GetLastQueue();
+	uint32_t GetNBytes(uint32_t qIndex);
 	uint32_t GetFlowCount(void);
-	Ptr<RdmaQueuePair> GetQp(uint32_t i); //获取索引为 i 的队列对
-
-  //恢复指定索引为 i 的队列，使其回到正常工作状态（例如处理被暂停或出错的队列）。
+	Ptr<RdmaQueuePair> GetQp(uint32_t i);
 	void RecoverQueue(uint32_t i);
-
-  ///放到高优先级队列中去
 	void EnqueueHighPrioQ(Ptr<Packet> p);
-
-	/// 清理高优先级队列，并使用回调 dropCb 追踪被丢弃的数据包
 	void CleanHighPrio(TracedCallback<Ptr<const Packet>, uint32_t> dropCb);
 
 	TracedCallback<Ptr<const Packet>, uint32_t> m_traceRdmaEnqueue;
@@ -131,20 +121,20 @@ public:
 
   bool Attach (Ptr<QbbChannel> ch);
 
-  virtual Ptr<Channel> GetChannel (void) const;
+   virtual Ptr<Channel> GetChannel (void) const;
 
    void SetQueue (Ptr<BEgressQueue> q);
    Ptr<BEgressQueue> GetQueue ();
    virtual bool IsQbb(void) const;
    void NewQp(Ptr<RdmaQueuePair> qp);
-   void ReassignedQp(Ptr<RdmaQueuePair> qp); ///重新分配qp
+   void ReassignedQp(Ptr<RdmaQueuePair> qp);
    void TriggerTransmit(void);
 
 	void SendPfc(uint32_t qIndex, uint32_t type); // type: 0 = pause, 1 = resume
 
-	TracedCallback<Ptr<const Packet>, uint32_t> m_traceEnqueue; // 入队
-	TracedCallback<Ptr<const Packet>, uint32_t> m_traceDequeue; //出队
-	TracedCallback<Ptr<const Packet>, uint32_t> m_traceDrop;  //丢弃
+	TracedCallback<Ptr<const Packet>, uint32_t> m_traceEnqueue;
+	TracedCallback<Ptr<const Packet>, uint32_t> m_traceDequeue;
+	TracedCallback<Ptr<const Packet>, uint32_t> m_traceDrop;
 	TracedCallback<uint32_t> m_tracePfc; // 0: resume, 1: pause
 protected:
 
@@ -152,8 +142,6 @@ protected:
 
   bool TransmitStart (Ptr<Packet> p);
   
-
-  // 清理和释放与该类对象相关的资源。
   virtual void DoDispose(void);
 
   /// Reset the channel into READY state and try transmit again
@@ -163,7 +151,7 @@ protected:
   virtual void DequeueAndTransmit(void);
 
   /// Resume a paused queue and call DequeueAndTransmit()
-  virtual void Resume(unsigned qIndex);  //恢复被暂停的队列
+  virtual void Resume(unsigned qIndex);
 
   /**
    * The queues for each priority class.
@@ -177,7 +165,7 @@ protected:
   //pfc
   bool m_qbbEnabled;	//< PFC behaviour enabled
   bool m_qcnEnabled;
-  bool m_dynamicth; //是否启用动态阈值
+  bool m_dynamicth;
   uint32_t m_pausetime;	//< Time for each Pause
   bool m_paused[qCnt];	//< Whether a queue paused
 
@@ -191,10 +179,10 @@ protected:
 
   struct ECNAccount{
 	  Ipv4Address source;
-	  uint32_t qIndex;  //队列的索引
+	  uint32_t qIndex;
 	  uint32_t port;
 	  uint8_t ecnbits;
-	  uint16_t qfb;  //队列反馈
+	  uint16_t qfb;
 	  uint16_t total;
   };
 

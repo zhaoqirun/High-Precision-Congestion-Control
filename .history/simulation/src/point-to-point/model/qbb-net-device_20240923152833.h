@@ -194,7 +194,7 @@ protected:
 	  uint32_t qIndex;  //队列的索引
 	  uint32_t port;
 	  uint8_t ecnbits;
-	  uint16_t qfb;  //队列反馈
+	  uint16_t qfb;
 	  uint16_t total;
   };
 

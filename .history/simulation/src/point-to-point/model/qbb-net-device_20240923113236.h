@@ -131,20 +131,20 @@ public:
 
   bool Attach (Ptr<QbbChannel> ch);
 
-  virtual Ptr<Channel> GetChannel (void) const;
+   virtual Ptr<Channel> GetChannel (void) const;
 
    void SetQueue (Ptr<BEgressQueue> q);
    Ptr<BEgressQueue> GetQueue ();
    virtual bool IsQbb(void) const;
    void NewQp(Ptr<RdmaQueuePair> qp);
-   void ReassignedQp(Ptr<RdmaQueuePair> qp); ///重新分配qp
+   void ReassignedQp(Ptr<RdmaQueuePair> qp);
    void TriggerTransmit(void);
 
 	void SendPfc(uint32_t qIndex, uint32_t type); // type: 0 = pause, 1 = resume
 
-	TracedCallback<Ptr<const Packet>, uint32_t> m_traceEnqueue; // 入队
-	TracedCallback<Ptr<const Packet>, uint32_t> m_traceDequeue; //出队
-	TracedCallback<Ptr<const Packet>, uint32_t> m_traceDrop;  //丢弃
+	TracedCallback<Ptr<const Packet>, uint32_t> m_traceEnqueue;
+	TracedCallback<Ptr<const Packet>, uint32_t> m_traceDequeue;
+	TracedCallback<Ptr<const Packet>, uint32_t> m_traceDrop;
 	TracedCallback<uint32_t> m_tracePfc; // 0: resume, 1: pause
 protected:
 
@@ -152,8 +152,6 @@ protected:
 
   bool TransmitStart (Ptr<Packet> p);
   
-
-  // 清理和释放与该类对象相关的资源。
   virtual void DoDispose(void);
 
   /// Reset the channel into READY state and try transmit again
@@ -163,7 +161,7 @@ protected:
   virtual void DequeueAndTransmit(void);
 
   /// Resume a paused queue and call DequeueAndTransmit()
-  virtual void Resume(unsigned qIndex);  //恢复被暂停的队列
+  virtual void Resume(unsigned qIndex);
 
   /**
    * The queues for each priority class.
@@ -177,7 +175,7 @@ protected:
   //pfc
   bool m_qbbEnabled;	//< PFC behaviour enabled
   bool m_qcnEnabled;
-  bool m_dynamicth; //是否启用动态阈值
+  bool m_dynamicth;
   uint32_t m_pausetime;	//< Time for each Pause
   bool m_paused[qCnt];	//< Whether a queue paused
 
@@ -191,10 +189,10 @@ protected:
 
   struct ECNAccount{
 	  Ipv4Address source;
-	  uint32_t qIndex;  //队列的索引
+	  uint32_t qIndex;
 	  uint32_t port;
 	  uint8_t ecnbits;
-	  uint16_t qfb;  //队列反馈
+	  uint16_t qfb;
 	  uint16_t total;
   };
 

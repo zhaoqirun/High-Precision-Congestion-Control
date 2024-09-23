@@ -177,7 +177,7 @@ protected:
   //pfc
   bool m_qbbEnabled;	//< PFC behaviour enabled
   bool m_qcnEnabled;
-  bool m_dynamicth; //是否启用动态阈值
+  bool m_dynamicth;
   uint32_t m_pausetime;	//< Time for each Pause
   bool m_paused[qCnt];	//< Whether a queue paused
 
@@ -191,10 +191,10 @@ protected:
 
   struct ECNAccount{
 	  Ipv4Address source;
-	  uint32_t qIndex;  //队列的索引
+	  uint32_t qIndex;
 	  uint32_t port;
 	  uint8_t ecnbits;
-	  uint16_t qfb;  //队列反馈
+	  uint16_t qfb;
 	  uint16_t total;
   };
 

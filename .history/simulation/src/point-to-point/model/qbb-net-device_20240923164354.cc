@@ -97,7 +97,7 @@ namespace ns3 {
 		bool found = false;
 		uint32_t qIndex;
 		if (!paused[ack_q_idx] && m_ackQ->GetNPackets() > 0)
-			return -1; // ack queue
+			return -1;
 
 		// no pkt in highest priority queue, do rr for each qp
 		int res = -1024;
@@ -106,18 +106,12 @@ namespace ns3 {
 		for (qIndex = 1; qIndex <= fcount; qIndex++){
 			uint32_t idx = (qIndex + m_rrlast) % fcount;
 			Ptr<RdmaQueuePair> qp = m_qpGrp->Get(idx);
-			// 对每个队列进行检查：
-    		// 未暂停：队列必须是未暂停的状态（!paused[qp->m_pg]）。
-    		// 有数据包：队列必须有剩余的待处理数据包（qp->GetBytesLeft() > 0）。
-    		// 不受窗口限制：队列没有被流量窗口（如拥塞窗口）限制（!qp->IsWinBound()）
 			if (!paused[qp->m_pg] && qp->GetBytesLeft() > 0 && !qp->IsWinBound()){
-				//确保当前队列可以立即处理（即没有等待时间
 				if (m_qpGrp->Get(idx)->m_nextAvail.GetTimeStep() > Simulator::Now().GetTimeStep()) //not available now
 					continue;
 				res = idx;
 				break;
 			}else if (qp->IsFinished()){
-				//如果队列对已经完成处理（qp->IsFinished()），则记录最早完成的队列 min_finish_id
 				min_finish_id = idx < min_finish_id ? idx : min_finish_id;
 			}
 		}

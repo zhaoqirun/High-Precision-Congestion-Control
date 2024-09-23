@@ -117,7 +117,6 @@ namespace ns3 {
 				res = idx;
 				break;
 			}else if (qp->IsFinished()){
-				//如果队列对已经完成处理（qp->IsFinished()），则记录最早完成的队列 min_finish_id
 				min_finish_id = idx < min_finish_id ? idx : min_finish_id;
 			}
 		}
